@@ -18,6 +18,35 @@ GHCi, version 8.2.2: http://www.haskell.org/ghc/  :? for help
 Prelude>
 ```
 
+Create a project using stack where we can test and run the code
+```shell
+stack -v new rgep simple
+```
+Download the source, copy it into our project
+```
+git clone https://github.com/bytesumo/HEAL.git
+cp HEAL/*.* rgep/src/.
+```
+The HEAL library depends on modules, which we need to add to our .cabal configuration file.
+We need to edit the default one and add in a couple of libaries
+```
+executable rgep
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5, mersenne-random-pure64
+```
+then we can fire up the repl, load the environment with dependent modules, and import the code.
+
+```
+stack ghci -v
+```
+note there is an error in a HEAL import in EAMonad.hs file. It's looking for import Control.Monad.State.Strict, but this change seemed to fix it:
+```
+import Control.Monad.ST.Strict
+``
+
+
 
 HEAL
 ====
