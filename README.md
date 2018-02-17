@@ -44,7 +44,7 @@ stack ghci -v
 note there is an error in a HEAL import in EAMonad.hs file. It's looking for import Control.Monad.State.Strict, but this change seemed to fix it:
 ```
 import Control.Monad.ST.Strict
-``
+```
 
 
 
