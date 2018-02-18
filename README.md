@@ -45,6 +45,33 @@ note there is an error in a HEAL import in EAMonad.hs file. It's looking for imp
 ```
 import Control.Monad.ST.Strict
 ```
+Another issue is that the monad-mersenne-random package is failing to build with this error:
+```
+/private/var/folders/th/cx3byth94rv223s8h6rfmnxc0000gn/T/stack44764/monad-mersenne-random-0.1/Control/Monad/Mersenne/Random.hs:50:10: error:
+        • No instance for (Applicative Rand)
+            arising from the superclasses of an instance declaration
+        • In the instance declaration for ‘Monad Rand’
+```
+There is a fixed version (I hope!) here: https://github.com/Batou99/monad-mersenne-random.git
+But to include it in the project, rather than the one on hackage, you need to do the following (according to this thread: https://www.reddit.com/r/haskell/comments/3rgq61/using_github_url_in_cabal_files_as_dependencies/)
+
+To build and use this patched version, we need to set up a sandbox (local module) and build it so we can use it. I tried this:
+```
+cd ..
+git clone https://github.com/Batou99/monad-mersenne-random.git
+cd monad*
+cabal sandbox init
+cabal install --only-dependencies
+cabal build
+# now that patched version is built
+cd rgep # change back to your project directory
+cabal sandbox init # create a sandbox here too
+sandbox add-source ../monad-mersenne-random
+cabal install --only-dependencies
+```
+Now the dependencies to run the HEAL code should be satisfied. 
+
+
 
 
 
