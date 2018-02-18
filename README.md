@@ -3,7 +3,7 @@ Forked from https://github.com/nsmryan/HEAL
 RGEP Examples
 =============
 
-This repository will server as my test of pulling together a worked example of RGEP, Robust Gene Expression Programming using the HEAL library.
+This repository will serve as my test of pulling together a worked example of RGEP, Robust Gene Expression Programming using the HEAL library.
 
 Paper to review is here:
 https://ac.els-cdn.com/S1877050911004972/1-s2.0-S1877050911004972-main.pdf?_tid=6305469a-13ff-11e8-b7f4-00000aab0f26&acdnat=1518885011_942a832139f81e71624868b29c447939
@@ -27,25 +27,9 @@ Download the source, copy it into our project
 git clone https://github.com/bytesumo/HEAL.git
 cp HEAL/*.* rgep/src/.
 ```
-The HEAL library depends on modules, which we need to add to our .cabal configuration file.
-We need to edit the default one and add in a couple of libaries
-```
-executable rgep
-  hs-source-dirs:      src
-  main-is:             Main.hs
-  default-language:    Haskell2010
-  build-depends:       base >= 4.7 && < 5, mersenne-random-pure64
-```
-then we can fire up the repl, load the environment with dependent modules, and import the code.
+The HEAL library depends on modules, which we need to add to our .cabal configuration file. 
 
-```
-stack ghci -v
-```
-note there is an error in a HEAL import in EAMonad.hs file. It's looking for import Control.Monad.State.Strict, but this change seemed to fix it:
-```
-import Control.Monad.ST.Strict
-```
-Another issue is that the monad-mersenne-random package is failing to build with this error:
+An issue is that the monad-mersenne-random package is failing to build with this error:
 ```
 /private/var/folders/th/cx3byth94rv223s8h6rfmnxc0000gn/T/stack44764/monad-mersenne-random-0.1/Control/Monad/Mersenne/Random.hs:50:10: error:
         • No instance for (Applicative Rand)
@@ -69,7 +53,16 @@ cabal sandbox init # create a sandbox here too
 sandbox add-source ../monad-mersenne-random
 cabal install --only-dependencies
 ```
-Now the dependencies to run the HEAL code should be satisfied. 
+Now the dependencies to run the HEAL code should be satisfied by updating the cabal dependencies:
+
+```
+executable rgep
+  hs-source-dirs:      src
+  main-is:             Main.hs
+  default-language:    Haskell2010
+  build-depends:       base >= 4.7 && < 5, mersenne-random-pure64, monad-mersenne-random, containers
+```
+
 
 
 
